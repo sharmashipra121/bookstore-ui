@@ -1,6 +1,8 @@
+import './BookCard.css';
+
 function BookCard({ book }) {
     return (
-        <div>
+         <div className="book-card">
             <h3>{book.title}</h3>
             <p>Author: {book.author}</p>
             <h4>Price: €{book.price}</h4>
