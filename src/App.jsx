@@ -1,8 +1,13 @@
+import Header from './components/Header';
+import Home from './pages/Home';
+import Footer from './components/Footer';
+
 function App() {
   return (
     <div>
-        <h2>Online Bookstore</h2>
-        <p>Welcome to our Online Bookstore Application.</p>
+            <Header />
+            <Home />
+            <Footer />
     </div>
   )
 }
