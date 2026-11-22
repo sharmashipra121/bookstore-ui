@@ -4,7 +4,7 @@ import { getAuthHeader } from '../services/AuthService';
 
 import './Home.css';
 
-function Home() {
+function Home({ onAddToCart, cartItems, onUpdateQuantity }) {
 
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,9 +53,20 @@ function Home() {
       <h2>Available Books</h2>
 
       <div className="book-list">
-        {books.map(book => (
-          <BookCard key={book.id} book={book} />
-        ))}
+        {books.map(book => {
+            const cartItem = cartItems.find(
+                item => item.id === book.id
+            );
+
+            return (
+                <BookCard
+                    key={book.id}
+                    book={book}
+                    onAddToCart={onAddToCart}
+                    quantity={cartItem ? cartItem.quantity : 0}
+                    onUpdateQuantity={onUpdateQuantity}
+                />
+            );
       </div>
     </div>
   );

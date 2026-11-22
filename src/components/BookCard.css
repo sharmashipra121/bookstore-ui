@@ -36,3 +36,20 @@
 .book-card button:hover {
     background-color: #365b80;
 }
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.quantity-controls button {
+    min-width: 35px;
+    padding: 8px;
+    font-size: 18px;
+}
+
+.quantity-controls span {
+    font-weight: bold;
+    color: #243b55;
+}
