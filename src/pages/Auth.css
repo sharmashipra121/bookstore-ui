@@ -1,0 +1,37 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background: #f4f6f9;
+}
+
+.auth-card {
+  width: 380px;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.auth-tabs {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+}
+
+.auth-tabs a {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  color: #555;
+  border-radius: 5px;
+}
+
+.auth-tabs a.active {
+  background: #243b55;
+  color: white;
+}
