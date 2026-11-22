@@ -50,3 +50,7 @@ export const getAuthHeader = () => {
     Authorization: `Basic ${authCredentials}`
   };
 };
+
+export const clearAuthCredentials = () => {
+  authCredentials = null;
+};

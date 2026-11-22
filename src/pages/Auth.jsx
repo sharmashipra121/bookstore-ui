@@ -3,7 +3,7 @@ import Login from './Login';
 import Register from './Register';
 import './Auth.css';
 
-function Auth() {
+function Auth({ onLoginSuccess }) {
   const location = useLocation();
   const isLogin = location.pathname === '/login';
 
@@ -27,7 +27,10 @@ function Auth() {
           </Link>
         </div>
 
-        {isLogin ? <Login /> : <Register />}
+        {isLogin
+            ? <Login onLoginSuccess={onLoginSuccess} />
+            : <Register />
+        }
 
       </div>
     </div>

@@ -67,6 +67,7 @@ function Home({ onAddToCart, cartItems, onUpdateQuantity }) {
                     onUpdateQuantity={onUpdateQuantity}
                 />
             );
+        })}
       </div>
     </div>
   );

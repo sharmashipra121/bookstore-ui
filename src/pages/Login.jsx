@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { loginUser, setAuthCredentials } from '../services/AuthService';
 
-function Login() {
+function Login({ onLoginSuccess }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -43,9 +43,8 @@ function Login() {
       });
 
       setAuthCredentials(formData.email, formData.password);
-
       setSuccess(response.message || 'Login Successful');
-
+      onLoginSuccess();
       navigate('/');
 
     } catch (err) {

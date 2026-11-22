@@ -2,12 +2,13 @@ import { useState } from 'react';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Footer from './components/Footer';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Auth from './pages/Auth';
 import './App.css';
 import Cart from './pages/Cart';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartItems, setCartItems] = useState([]);
 
   const addToCart = (book) => {
@@ -43,11 +44,23 @@ function App() {
     );
   };
 
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    clearAuthCredentials();
+    setIsLoggedIn(false);
+  };
+
   return (
     <BrowserRouter>
       <div className="app-container">
 
-        <Header />
+        <Header
+          isLoggedIn={isLoggedIn}
+          onLogout={handleLogout}
+        />
 
         <main>
           <Routes>
@@ -62,8 +75,22 @@ function App() {
                 }
             />
 
-            <Route path="/login" element={<Auth />} />
-            <Route path="/register" element={<Auth />} />
+            <Route
+              path="/login"
+              element={
+                isLoggedIn
+                  ? <Navigate to="/" replace />
+                  : <Auth onLoginSuccess={handleLoginSuccess} />
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                isLoggedIn
+                  ? <Navigate to="/" replace />
+                  : <Auth onLoginSuccess={handleLoginSuccess} />
+              }
+            />
 
             <Route
                 path="/cart"
