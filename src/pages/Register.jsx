@@ -1,5 +1,7 @@
+
 import { useState } from 'react';
 import './Register.css';
+import { registerUser } from '../services/AuthService';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -10,6 +12,8 @@ function Register() {
   });
 
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,8 +24,11 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setError('');
+    setSuccess('');
 
     if (
       !formData.name ||
@@ -38,9 +45,28 @@ function Register() {
       return;
     }
 
-    setError('');
+    try {
+      setLoading(true);
 
-    console.log('Registration Data:', formData);
+      const response = await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password
+      });
+
+      setSuccess(response.message || 'Registration successful!');
+
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -98,8 +124,10 @@ function Register() {
 
           {error && <p className="error">{error}</p>}
 
-          <button type="submit">
-            Register
+          {success && <p className="success">{success}</p>}
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
 
