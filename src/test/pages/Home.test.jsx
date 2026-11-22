@@ -4,7 +4,6 @@ import { render, screen } from '@testing-library/react';
 import Home from '../../pages/Home';
 
 describe('Home Component', () => {
-
   test('should display books fetched from backend API', async () => {
 
     // Arrange
@@ -37,8 +36,11 @@ describe('Home Component', () => {
     expect(await screen.findByText('Effective Java')).toBeInTheDocument();
     expect(screen.getByText('Clean Code')).toBeInTheDocument();
 
-    expect(global.fetch).toHaveBeenCalledWith(
-      'http://localhost:8080/books'
+    expect(fetch).toHaveBeenCalledWith(
+      'http://localhost:8080/books',
+      {
+        headers: expect.any(Object)
+      }
     );
   });
 

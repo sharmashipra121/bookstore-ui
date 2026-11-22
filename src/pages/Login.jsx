@@ -1,13 +1,19 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { loginUser, setAuthCredentials } from '../services/AuthService';
 
 function Login() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,7 +24,7 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
@@ -26,7 +32,27 @@ function Login() {
       return;
     }
 
-    setError('');
+    try {
+      setError('');
+      setSuccess('');
+      setLoading(true);
+
+      const response = await loginUser({
+        email: formData.email,
+        password: formData.password
+      });
+
+      setAuthCredentials(formData.email, formData.password);
+
+      setSuccess(response.message || 'Login Successful');
+
+      navigate('/');
+
+    } catch (err) {
+      setError(err.message || 'Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,8 +89,10 @@ function Login() {
 
           {error && <p className="error">{error}</p>}
 
-          <button type="submit">
-            Login
+          {success && <p className="success">{success}</p>}
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 

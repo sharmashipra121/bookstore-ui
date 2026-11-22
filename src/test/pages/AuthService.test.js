@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { registerUser } from '../../services/AuthService';
+import { registerUser, loginUser, setAuthCredentials, getAuthHeader } from '../../services/AuthService';
 
 describe('Auth Service', () => {
   beforeEach(() => {
@@ -106,6 +106,59 @@ describe('Auth Service', () => {
         password: 'Shipra@123'
       })
     ).rejects.toThrow('Email is already in use');
+  });
+
+  it('should call login API with email and password', async () => {
+    const mockResponse = {
+      message: 'Login Successful'
+    };
+
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => mockResponse
+    }));
+
+    const result = await loginUser({
+      email: 'test@gmail.com',
+      password: 'password123'
+    });
+
+    expect(fetch).toHaveBeenCalledWith(
+      'http://localhost:8080/auth/login',
+      expect.objectContaining({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: 'test@gmail.com',
+          password: 'password123'
+        })
+      })
+    );
+
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should throw error when login API fails', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false
+    }));
+
+    await expect(
+      loginUser({
+        email: 'wrong@gmail.com',
+        password: 'wrong123'
+      })
+    ).rejects.toThrow();
+  });
+
+  it('should set authentication credentials', () => {
+    setAuthCredentials('test@gmail.com', 'password123');
+
+    expect(getAuthHeader()).toEqual({
+      Authorization: `Basic ${btoa('test@gmail.com:password123')}`
+    });
   });
 
 });

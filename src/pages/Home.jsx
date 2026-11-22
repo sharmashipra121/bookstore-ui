@@ -1,5 +1,6 @@
 import BookCard from '../components/BookCard';
 import { useEffect, useState } from 'react';
+import { getAuthHeader } from '../services/AuthService';
 
 import './Home.css';
 
@@ -13,7 +14,12 @@ function Home() {
     const fetchBooks = async () => {
       try {
         const response = await fetch(
-          'http://localhost:8080/books'
+          'http://localhost:8080/books',
+          {
+            headers: {
+              ...getAuthHeader()
+            }
+          }
         );
 
         if (!response.ok) {
