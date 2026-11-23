@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Login.css';
 import { loginUser, setAuthCredentials } from '../services/AuthService';
 
 function Login({ onLoginSuccess }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirectTo = location.state?.from || '/';
 
   const [formData, setFormData] = useState({
     email: '',
@@ -45,7 +48,7 @@ function Login({ onLoginSuccess }) {
       setAuthCredentials(formData.email, formData.password);
       setSuccess(response.message || 'Login Successful');
       onLoginSuccess();
-      navigate('/');
+      navigate(redirectTo, { replace: true });
 
     } catch (err) {
       setError(err.message || 'Invalid email or password');

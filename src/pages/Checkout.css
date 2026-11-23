@@ -1,0 +1,89 @@
+
+.checkout-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.checkout-container h2 {
+  color: #243b55;
+  margin-bottom: 20px;
+}
+
+.checkout-message {
+  color: #198754;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.checkout-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 25px;
+}
+
+.checkout-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.checkout-item h4 {
+  margin: 0 0 8px;
+}
+
+.checkout-item p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.checkout-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.place-order-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 12px;
+  background: #243b55;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: not-allowed;
+}
+
+.checkout-note {
+  color: #777;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #243b55;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 1;
+    transition: background-color 0.2s ease;
+}
+
+.checkout-btn:hover:not(:disabled) {
+    background-color: #162b40;
+}
+
+.checkout-btn:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}

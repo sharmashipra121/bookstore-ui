@@ -1,6 +1,6 @@
 import './Cart.css';
 
-function Cart({ cartItems, onUpdateQuantity }) {
+function Cart({ cartItems, onUpdateQuantity, onProceedCheckout }) {
     const totalPrice = cartItems.reduce(
         (total, item) => total + item.price * item.quantity,
         0
@@ -75,7 +75,11 @@ function Cart({ cartItems, onUpdateQuantity }) {
                         <strong>€{totalPrice.toFixed(2)}</strong>
                     </div>
 
-                    <button className="checkout-btn" disabled>
+                    <button
+                        className="checkout-btn"
+                        onClick={onProceedCheckout}
+                        disabled={cartItems.length === 0}
+                    >
                         Proceed to Checkout
                     </button>
                 </div>

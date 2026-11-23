@@ -26,3 +26,24 @@ nav a {
 nav a:hover {
     color: #f0c040;
 }
+
+.cart-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-badge {
+  background-color: #e53935;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  min-width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
