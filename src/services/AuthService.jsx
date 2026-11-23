@@ -54,3 +54,71 @@ export const getAuthHeader = () => {
 export const clearAuthCredentials = () => {
   authCredentials = null;
 };
+
+export const getCart = async () => {
+  const response = await fetch(`${API_BASE_URL}/cart`, {
+    headers: {
+      ...getAuthHeader()
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch cart');
+  }
+
+  return response.json();
+};
+
+export const addBookToCart = async (bookId, quantity = 1) => {
+  const params = new URLSearchParams({ bookId, quantity });
+
+  const response = await fetch(
+    `${API_BASE_URL}/cart/items?${params}`,
+    {
+      method: 'POST',
+      headers: {
+        ...getAuthHeader()
+      }
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to add book to cart');
+  }
+
+  return response.json();
+};
+
+export const updateCartQuantity = async (bookId, quantity) => {
+  const response = await fetch(
+    `${API_BASE_URL}/cart/items/${bookId}?quantity=${quantity}`,
+    {
+      method: 'PUT',
+      headers: {
+        ...getAuthHeader()
+      }
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to update cart quantity');
+  }
+
+  return response.json();
+};
+
+export const removeBookFromCart = async (bookId) => {
+  const response = await fetch(
+    `${API_BASE_URL}/cart/items/${bookId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        ...getAuthHeader()
+      }
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to remove book from cart');
+  }
+};
