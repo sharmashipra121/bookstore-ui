@@ -5,36 +5,45 @@ import { getAuthHeader } from '../services/AuthService';
 import './Home.css';
 
 function Home({ onAddToCart, cartItems, onUpdateQuantity }) {
-
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchBooks = async () => {
-      try {
-        const response = await fetch(
-          'http://localhost:8080/books',
-          {
-            headers: {
-              ...getAuthHeader()
-            }
+    try {
+      const response = await fetch(
+        'http://localhost:8080/books',
+        {
+          headers: {
+            ...getAuthHeader()
           }
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch books');
         }
+      );
 
-        const data = await response.json();
-        setBooks(data);
+      const responseText = await response.text();
 
-      } catch (error) {
-        setError('Unable to load books. Please try again.');
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(
+          `API failed with status: ${response.status}`
+        );
       }
-    };
+
+      const data = JSON.parse(responseText);
+
+      if (!data || !Array.isArray(data.content)) {
+      throw new Error('Expected an array inside data.content');
+    }
+
+      setBooks(data.content);
+
+    } catch (error) {
+      console.error('Fetch Books Error:', error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
     fetchBooks();
 
