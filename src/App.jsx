@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Footer from './components/Footer';
@@ -29,11 +29,10 @@ import './App.css';
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  const [cartLoading, setCartLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const updateCartState = (cartResponse) => {
+  const updateCartState = useCallback((cartResponse) => {
     const items = cartResponse.items.map(item => ({
       id: item.bookId,
       cartItemId: item.id,
@@ -45,29 +44,16 @@ function AppContent() {
     }));
 
     setCartItems(items);
-  };
+  }, []);
 
   const fetchCart = useCallback(async () => {
     try {
-      setCartLoading(true);
-
       const response = await getCart();
       updateCartState(response);
-
     } catch (error) {
       console.error('Unable to fetch cart:', error);
-    } finally {
-      setCartLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchCart();
-    } else {
-      setCartItems([]);
-    }
-  }, [isLoggedIn, fetchCart]);
+  }, [updateCartState]);
 
   const addToCart = async (book) => {
     if (!isLoggedIn) {
@@ -132,6 +118,7 @@ function AppContent() {
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
+    fetchCart();
   };
 
   const handleLogout = () => {

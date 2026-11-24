@@ -1,10 +1,8 @@
 import './Cart.css';
+import { formatEuro, getCartTotals } from '../utils/cart';
 
 function Cart({ cartItems, onUpdateQuantity, onProceedCheckout }) {
-    const totalPrice = cartItems.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-    );
+    const { itemCount, totalPrice } = getCartTotals(cartItems);
 
     if (cartItems.length === 0) {
         return (
@@ -27,7 +25,7 @@ function Cart({ cartItems, onUpdateQuantity, onProceedCheckout }) {
                             <div className="cart-book-details">
                                 <h3>{item.title}</h3>
                                 <p>Author: {item.author}</p>
-                                <p>Price: €{item.price}</p>
+                                <p>Price: {formatEuro(item.price)}</p>
                             </div>
 
                             <div className="cart-quantity">
@@ -52,7 +50,7 @@ function Cart({ cartItems, onUpdateQuantity, onProceedCheckout }) {
                             </div>
                             <div className="cart-subtotal">
                                 <strong>
-                                    €{(item.price * item.quantity).toFixed(2)}
+                                    {formatEuro(item.price * item.quantity)}
                                 </strong>
                             </div>
                         </div>
@@ -64,15 +62,13 @@ function Cart({ cartItems, onUpdateQuantity, onProceedCheckout }) {
                     <div className="summary-row">
                         <span>Total Items</span>
                         <span>
-                            {cartItems.reduce(
-                                (total, item) => total + item.quantity, 0
-                            )}
+                            {itemCount}
                         </span>
                     </div>
 
                     <div className="summary-row total">
                         <span>Total Price</span>
-                        <strong>€{totalPrice.toFixed(2)}</strong>
+                        <strong>{formatEuro(totalPrice)}</strong>
                     </div>
 
                     <button

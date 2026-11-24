@@ -24,10 +24,16 @@ describe('Home Component', () => {
       }
     ];
 
-    global.fetch = vi.fn().mockResolvedValue({
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => mockBooks
-    });
+      json: async () => ({
+        content: mockBooks,
+        page: {
+          totalPages: 1,
+          totalElements: mockBooks.length
+        }
+      })
+    }));
 
     // Act
     render(<Home />);
@@ -37,9 +43,10 @@ describe('Home Component', () => {
     expect(screen.getByText('Clean Code')).toBeInTheDocument();
 
     expect(fetch).toHaveBeenCalledWith(
-      'http://localhost:8080/books',
+      'http://localhost:8080/books?page=0&size=20',
       {
-        headers: expect.any(Object)
+        method: 'GET',
+        credentials: 'include'
       }
     );
   });

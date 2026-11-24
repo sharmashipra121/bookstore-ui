@@ -6,6 +6,8 @@ function BookCard({
     quantity,
     onUpdateQuantity
 }) {
+    const hasQuantity = quantity > 0;
+
     return (
         <div className="book-card">
 
@@ -13,7 +15,7 @@ function BookCard({
             <p>Author: {book.author}</p>
             <h4>Price: €{book.price}</h4>
 
-            {quantity === 0 ? (
+            {!hasQuantity ? (
                 <button onClick={() => onAddToCart(book)}>
                     Add to Cart
                 </button>

@@ -3,7 +3,10 @@ import { registerUser, loginUser, setAuthCredentials, getAuthHeader } from '../.
 
 describe('Auth Service', () => {
   beforeEach(() => {
-    vi.stubGlobal('fetch', vi.fn());
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ message: 'Registration successful!' })
+    }));
   });
 
   afterEach(() => {
@@ -45,7 +48,8 @@ describe('Auth Service', () => {
       password: 'Shipra@123'
     });
 
-    expect(fetch.mock.calls[0][1].method).toBe('POST');
+    const registrationCall = fetch.mock.calls.find(([url]) => url.endsWith('/auth/register'));
+    expect(registrationCall[1].method).toBe('POST');
 
   });
 
@@ -65,7 +69,8 @@ describe('Auth Service', () => {
 
     await registerUser(userData);
 
-    expect(fetch.mock.calls[0][1].body).toBe(
+    const registrationCall = fetch.mock.calls.find(([url]) => url.endsWith('/auth/register'));
+    expect(registrationCall[1].body).toBe(
       JSON.stringify(userData)
     );
 
@@ -92,12 +97,12 @@ describe('Auth Service', () => {
   });
 
   it('should throw error when API returns failure response', async () => {
-    fetch.mockResolvedValue({
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
       ok: false,
       json: async () => ({
         message: 'Email is already in use'
       })
-    });
+    }));
 
     await expect(
       registerUser({

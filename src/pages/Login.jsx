@@ -20,11 +20,10 @@ function Login({ onLoginSuccess }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData({
-      ...formData,
+    setFormData(current => ({
+      ...current,
       [name]: value
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {

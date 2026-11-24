@@ -1,15 +1,9 @@
 
 import './Checkout.css';
+import { formatEuro, getCartTotals } from '../utils/cart';
 
 function Checkout({ cartItems }) {
-
-  const totalItems = cartItems.reduce(
-    (total, item) => total + item.quantity, 0
-  );
-
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity, 0
-  );
+  const { itemCount, totalPrice } = getCartTotals(cartItems);
 
   if (cartItems.length === 0) {
     return (
@@ -39,7 +33,7 @@ function Checkout({ cartItems }) {
                     </div>
 
                     <strong>
-                    €{(item.price * item.quantity).toFixed(2)}
+                    {formatEuro(item.price * item.quantity)}
                     </strong>
                 </div>
             ))}
@@ -47,11 +41,11 @@ function Checkout({ cartItems }) {
             <hr />
             <div className="checkout-total">
             <span>Total Items</span>
-            <strong>{totalItems}</strong>
+            <strong>{itemCount}</strong>
             </div>
             <div className="checkout-total">
             <span>Total Amount</span>
-            <strong>€{totalPrice.toFixed(2)}</strong>
+            <strong>{formatEuro(totalPrice)}</strong>
             </div>
 
             <button className="place-order-btn" disabled>

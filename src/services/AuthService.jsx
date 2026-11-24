@@ -37,18 +37,13 @@ export const loginUser = async (loginData) => {
   return data;
 };
 
-export const setAuthCredentials = (email, password) => {
-  authCredentials = btoa(`${email}:${password}`);
+export const getAuthHeader = () => {
+  if (!authCredentials) return {};
+  return { Authorization: `Basic ${authCredentials}` };
 };
 
-export const getAuthHeader = () => {
-  if (!authCredentials) {
-    return {};
-  }
-
-  return {
-    Authorization: `Basic ${authCredentials}`
-  };
+export const setAuthCredentials = (email, password) => {
+  authCredentials = btoa(`${email}:${password}`);
 };
 
 export const clearAuthCredentials = () => {
@@ -57,9 +52,7 @@ export const clearAuthCredentials = () => {
 
 export const getCart = async () => {
   const response = await fetch(`${API_BASE_URL}/cart`, {
-    headers: {
-      ...getAuthHeader()
-    }
+    headers: { ...getAuthHeader() }
   });
 
   if (!response.ok) {
